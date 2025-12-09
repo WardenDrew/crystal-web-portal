@@ -1,102 +1,92 @@
+<script setup>
+import {onMounted, onUnmounted, ref, computed} from 'vue';
+import {DateTime} from 'luxon';
+import {useRoute} from 'vue-router';
+import {useQuasar} from "quasar";
+
+const route = useRoute();
+const title = computed(() => route.meta['title']);
+
+const quasar = useQuasar();
+const isFullscreen = computed(() => quasar.fullscreen.isActive);
+function toggleFullscreen() {
+  if (quasar.fullscreen.isActive) {
+    quasar.fullscreen.exit();
+  }
+  else {
+    quasar.fullscreen.request();
+  }
+}
+
+const time = ref('');
+let timeUpdateInterval = null;
+
+function setTime() {
+  time.value = DateTime.now().toFormat('hh:mm a');
+}
+
+onMounted(() => {
+
+  setTime();
+  timeUpdateInterval = setInterval(() => {
+    setTime();
+  }, 200);
+})
+
+onUnmounted(() => {
+  if (timeUpdateInterval) {
+    clearInterval(timeUpdateInterval);
+  }
+})
+</script>
+
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
-      <q-toolbar>
+    <q-header class="flex justify-between items-center bg-transparent">
+      <div class="flex justify-start items-center">
         <q-btn
           flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
+          size="xl"
+          icon="mdi-home"
+          aria-label="Home"
+          to="/"
+          class="q-pa-md"
         />
-
-        <q-toolbar-title>
-          Quasar App
-        </q-toolbar-title>
-
-        <div>Quasar v{{ $q.version }}</div>
-      </q-toolbar>
+        <h4 v-if="!title" class="q-pa-none q-my-none q-mx-sm">Crystal's Quick Support</h4>
+        <div v-else class="flex column justify-center align-start q-mx-sm">
+          <h6 class="q-pa-none q-ma-none">Crystal's Quick Support</h6>
+          <span class="text-subtitle1">{{title}}</span>
+        </div>
+      </div>
+      <div class="flex justify-end items-center">
+        <h4 class="q-pa-none q-ma-none title-time">{{time}}</h4>
+        <q-btn
+          flat
+          size="xl"
+          :icon="isFullscreen ? 'mdi-fullscreen-exit' : 'mdi-fullscreen'"
+          aria-label="Fullscreen Toggle"
+          class="q-pa-md"
+          @click="toggleFullscreen"
+        />
+        <q-btn
+          flat
+          size="xl"
+          icon="mdi-cog"
+          aria-label="Settings"
+          to="settings"
+          class="q-pa-md"
+          disable
+        />
+      </div>
     </q-header>
-
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-    >
-      <q-list>
-        <q-item-label
-          header
-        >
-          Essential Links
-        </q-item-label>
-
-        <EssentialLink
-          v-for="link in linksList"
-          :key="link.title"
-          v-bind="link"
-        />
-      </q-list>
-    </q-drawer>
-
     <q-page-container>
       <router-view />
     </q-page-container>
   </q-layout>
 </template>
 
-<script setup>
-import { ref } from 'vue'
-import EssentialLink from 'components/EssentialLink.vue'
-
-const linksList = [
-  {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
-  },
-  {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
-]
-
-const leftDrawerOpen = ref(false)
-
-function toggleLeftDrawer () {
-  leftDrawerOpen.value = !leftDrawerOpen.value
+<style scoped lang="scss">
+.title-time {
+  font-family: monospace;
 }
-</script>
+</style>

@@ -1,27 +1,24 @@
 <template>
-  <div class="fullscreen bg-blue text-white text-center q-pa-md flex flex-center">
-    <div>
-      <div style="font-size: 30vh">
-        404
-      </div>
+  <div class="fullscreen text-center q-pa-md flex column flex-center">
+    <h2 class="q-pa-none q-ma-none">
+      Oops. Nothing here...
+    </h2>
 
-      <div class="text-h2" style="opacity:.4">
-        Oops. Nothing here...
-      </div>
-
-      <q-btn
-        class="q-mt-xl"
-        color="white"
-        text-color="blue"
-        unelevated
-        to="/"
-        label="Go Home"
-        no-caps
-      />
-    </div>
+    <q-btn
+      class="q-mt-xl"
+      color="red"
+      push
+      icon="mdi-history"
+      label="Go Back"
+      stack
+      size="xl"
+      @click="historyBack"
+    />
   </div>
 </template>
 
 <script setup>
-//
+function historyBack() {
+  window.history.back();
+}
 </script>

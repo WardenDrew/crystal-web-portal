@@ -1,0 +1,56 @@
+{
+  "server": {
+    "debug": true,
+    "log_level": "info",
+    "http_demo": true,
+    "http_debug": false,
+    "http_auth": true,
+    "http_login": "demo",
+    "http_password": "demo",
+    "http_port": ":8083"
+  },
+  "streams": {
+    "channel01": {
+      "name": "Channel 01",
+      "channels": {
+        "0": {
+          "name": "ch1",
+          "url": "rtsp://tablet:Haskell2025@10.100.0.22:554/Preview_01_sub",
+          "on_demand": true,
+          "debug": false,
+          "audio": true,
+          "status": 0
+        }
+      }
+    },
+    "channel02": {
+      "name": "Channel 02",
+      "channels": {
+        "0": {
+          "name": "ch2",
+          "url": "rtsp://tablet:Haskell2025@10.100.0.22:554/Preview_02_sub",
+          "on_demand": true,
+          "debug": false,
+          "audio": true,
+          "status": 0
+        }
+      }
+    },
+    "channel03": {
+      "name": "Channel 03",
+      "channels": {
+        "0": {
+          "name": "ch3",
+          "url": "rtsp://tablet:Haskell2025@10.100.0.22:554/Preview_03_sub",
+          "on_demand": true,
+          "debug": false,
+          "audio": true,
+          "status": 0
+        }
+      }
+    }
+  },
+  "channel_defaults": {
+    "on_demand": true
+  }
+}
